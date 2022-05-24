@@ -33,6 +33,7 @@ $ npm i
 `Login.js`파일에서는 스포티파이로 로그인을 합니다.
 ![img](https://developer.spotify.com/assets/AuthG_ImplicitGrant.png)
 이 방식으로 토큰을 저장합니다. (Implicit Grant Flow)
+개발자 모드에서는 대시보드에서 명시적으로 계정을 추가해야 합니다. (최대 25명)
 
 토큰은 로컬스토리지에 저장됩니다.
 
