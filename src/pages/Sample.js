@@ -6,30 +6,12 @@ function Sample() {
   const client_secret = process.env.REACT_APP_CLIENT_SECRET;
   const auth = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
 
-  const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  /* 스포티파이 서버에서 액세스 토큰 발급받기 */
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', {
-          headers: {
-            Authorization: 'Basic ' + auth,
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        });
-        console.log(res.data.access_token);
-        setToken(res.data.access_token);
-        /* 발급받은 토큰을 저장함 */
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, [auth]);
 
   const [data, setData] = useState([]);
   const [query, setQuery] = useState('');
+
+  const [token, setToken] = useState('');
 
   /* 클릭하면 쿼리로 아티스트를 검색 */
   const getAlbum = async (e) => {
@@ -46,7 +28,6 @@ function Sample() {
           //액세스 토큰 전송 (요청마다)
         },
       });
-      console.log(res.data.artists.items[0].images[0]['url']);
       setData(res.data.artists.items);
     } catch (e) {
       console.error(e);
@@ -60,11 +41,31 @@ function Sample() {
     setQuery(e.target.value);
   };
 
+  const handleClick = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', {
+        headers: {
+          Authorization: 'Basic ' + auth,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+      window.localStorage.setItem('token', res.data.access_token);
+      setToken(res.data.access_token);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    setToken(window.localStorage.getItem('token') || '');
+  }, [token]);
   return (
     <>
+      <button onClick={handleClick}>새 토큰 발급</button>
       {token ? (
         <>
-          <h2>액세스 토큰: {token} </h2>
+          <h2>로컬 스토리지에 저장된 액세스 토큰: {token} </h2>
           <h3>아티스트 검색</h3>
           <input type="text" onChange={handleChange} />
           <button onClick={getAlbum}>click</button>
