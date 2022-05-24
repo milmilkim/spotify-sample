@@ -12,7 +12,7 @@ function Callback() {
     return () => {
       console.clear();
     };
-  }, []);
+  }, [token, navigate]);
 
   navigate('/');
   console.log(token);

@@ -26,7 +26,7 @@ function MyProfile() {
         }
       })();
     }
-  }, []);
+  }, [token]);
   return (
     <>
       <h2>MyProfile</h2>
