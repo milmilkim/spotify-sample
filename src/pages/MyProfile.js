@@ -19,8 +19,9 @@ function MyProfile() {
 
           console.log(res.data);
           setData(res.data);
-        } catch (e) {
-          console.error(e);
+        } catch (err) {
+          console.error('status:' + err.response.status);
+          console.error('message:' + err);
         } finally {
           setIsLoading(false);
         }

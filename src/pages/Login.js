@@ -3,7 +3,7 @@ import { redirect_uri } from '../config';
 
 const client_id = process.env.REACT_APP_CLIENT_ID;
 
-const scope = 'user-read-private user-read-email';
+const scope = 'user-read-private user-read-email user-top-read';
 
 let url = 'https://accounts.spotify.com/authorize';
 url += '?response_type=token';
